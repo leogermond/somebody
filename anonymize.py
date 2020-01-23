@@ -22,8 +22,9 @@ def anonymize_faces(img, min_faces=1, strokes=3):
         fy = fy[0] - (fy[1] - fy[0]) // 4, fy[1]
 
         strike_sz = (fy[1] - fy[0]) // strokes
+        irx, iry = int(random.uniform(-10, 10)), int(random.uniform(-4, 4))
         for oy in range(0, strokes * strike_sz, strike_sz):
-            rx, ry = int(random.uniform(-15, 15)), int(random.uniform(-7, 7))
+            rx, ry = irx + int(random.uniform(-5, 5)), iry + int(random.uniform(-3, 3))
             draw.polygon(
                 [(fx[0] + rx, fy[0] + oy),
                  (fx[0], fy[0] + oy + strike_sz),
@@ -34,9 +35,12 @@ def anonymize_faces(img, min_faces=1, strokes=3):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('image')
+    ap.add_argument("--min-faces", type=int, default=2)
+    ap.add_argument("--strokes", type=int, default=3)
     args = ap.parse_args()
     img = face_recognition.load_image_file(args.image)
-    im = Image.fromarray(anonymize_faces(img))
+    im = Image.fromarray(anonymize_faces(img, args.min_faces,
+                                         args.strokes))
     im.save('out.jpg')
 
 if __name__  == "__main__":
