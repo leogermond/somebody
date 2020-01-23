@@ -10,7 +10,7 @@ def main():
         if not check:
             break
 
-        anon = anonymize.anonymize_faces(frame)
+        anon = anonymize.anonymize_faces(frame, min_faces=2, strokes=4)
         cv2.imshow('frame', anon)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break

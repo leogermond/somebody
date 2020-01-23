@@ -4,12 +4,12 @@ import face_recognition.api as face_recognition
 from PIL import Image, ImageDraw
 import numpy as np
 
-def anonymize_faces(img):
+def anonymize_faces(img, min_faces=1, strokes=3):
     faces = face_recognition.face_locations(img)
     im = Image.fromarray(img)
     draw = ImageDraw.Draw(im)
 
-    if len(faces) == 1:
+    if len(faces) <= min_faces:
         show = -1
     else:
         show = int(random.uniform(0, len(faces)))
@@ -21,8 +21,8 @@ def anonymize_faces(img):
         fy = (f[0], f[2] + 1)
         fy = fy[0] - (fy[1] - fy[0]) // 4, fy[1]
 
-        strike_sz = (fy[1] - fy[0]) // 3
-        for oy in range(0, 3 * strike_sz, strike_sz):
+        strike_sz = (fy[1] - fy[0]) // strokes
+        for oy in range(0, strokes * strike_sz, strike_sz):
             rx, ry = int(random.uniform(-15, 15)), int(random.uniform(-7, 7))
             draw.polygon(
                 [(fx[0] + rx, fy[0] + oy),
