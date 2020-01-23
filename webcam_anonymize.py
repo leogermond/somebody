@@ -3,6 +3,8 @@ import anonymize
 
 def main():
     webcam = cv2.VideoCapture(0)
+    webcam.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+    webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
     while True:
         check, frame = webcam.read()
         if not check:
